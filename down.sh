@@ -1,19 +1,15 @@
 #!/bin/bash
 
-if [ $# -eq 0 ]
-then
-  echo "No arguments supplied. Exiting.... "
-  exit 1
-fi
+id=$(aws ec2 describe-instances --region eu-west-1 --filters 'Name=tag:Name,Values=Bastion' | jq -r .Reservations[].Instances[].InstanceId)
+aws ec2 stop-instances --instance-ids $id --region eu-west-1 --force
 
-aws ec2 stop-instances --instance-ids $1 --region eu-west-1
-
-status=$(aws ec2 describe-instance-status --instance-id $1 --region eu-west-1 | jq -r .InstanceStatuses[0].InstanceState.Name)
+status=$(aws ec2 describe-instance-status --instance-id $id --region eu-west-1 | jq -r .InstanceStatuses[0].InstanceState.Name)
 	while [[ $status != "null" ]]; 
 	do
 		sleep 3
 		echo 'wait'
-		status=$(aws ec2 describe-instance-status --instance-id $1 --region eu-west-1 | jq -r .InstanceStatuses[0].InstanceState.Name)
+		status=$(aws ec2 describe-instance-status --instance-id $id --region eu-west-1  | jq -r .InstanceStatuses[0].InstanceState.Name)
 	done  
 
 	echo 'Eliminada intancia!'
+
