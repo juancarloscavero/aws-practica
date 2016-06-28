@@ -6,4 +6,4 @@ then
   exit 1
 fi
 
-aws ec2 stop-instances --instance-ids $1
+aws ec2 stop-instances --instance-ids $1 --region eu-west-1
