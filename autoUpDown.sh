@@ -16,6 +16,7 @@ if [ "$apagar" == "$now" ]; then
 					sleep 3
 					echo '...'
 					status=$(aws ec2 describe-instance-status --instance-id $id --region eu-west-1  | jq -r .InstanceStatuses[0].InstanceState.Name)
+					echo $status
 				done  
 
 				echo 'Stopped baby!'
