@@ -11,7 +11,7 @@ if [ "$apagar" == "$now" ]; then
         echo $status
         if [ "$status" != "stopped" ]; then
                 aws ec2 stop-instances --region eu-west-1 --instance-ids $id
-                while [[ "$status" != "stopped" ]]; 
+                while [[ "$status" != "null" ]]; 
 				do
 					sleep 3
 					echo '...'
